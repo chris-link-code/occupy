@@ -4,7 +4,4 @@ project(occupy C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(occupy
-        main.c
-        src/log.c
-)
+add_executable(occupy main.c)
