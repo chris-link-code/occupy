@@ -10,11 +10,13 @@
 void info(char *info);
 
 //全局未初始化区
-char *memory;
+int *memory;
+long long memory_size;
+long long one = 1;
 
-bool USE_MEMORY = false;
-int rand_sleep = 0;
-int rand_use = 0;
+bool use_memory = false;
+int rand_use_seconds = 0;
+int rand_release_seconds = 0;
 FILE *fp;
 
 void main() {
@@ -25,31 +27,34 @@ void main() {
     while (1) {
         char use_memory_str[4] = {0};
         //value: 要转换的整数，string: 转换后的字符串,radix: 转换进制数，如2,8,10,16 进制等。
-        itoa(USE_MEMORY, use_memory_str, 10);
+        itoa(use_memory, use_memory_str, 10);
         info("USE_MEMORY");
         info(use_memory_str);
 
-        if (USE_MEMORY) {
+        if (use_memory) {
             info("use memory");
+
+            // 1 << 29 = 512 MB
+            memory_size = (one << 29) * 8;
 
             // 占用内存
             // 分配空间
-            memory = (char *) malloc(1 << 30);
+            memory = (int *) malloc(memory_size);
 
             info("occupy");
             // 向内存空间内填充数据
-            memset(memory, 0xFF, 1 << 30);
+            memset(memory, 0xFFFF, memory_size);
 
             // 获取随机数，10 ~ 20
-            rand_sleep = rand() % 11 + 10;
-            char rand_sleep_str[4] = {0};
+            rand_use_seconds = rand() % 11 + 10;
+            char rand_release_str[4] = {0};
             //value: 要转换的整数，string: 转换后的字符串,radix: 转换进制数，如2,8,10,16 进制等。
-            itoa(rand_sleep, rand_sleep_str, 10);
+            itoa(rand_use_seconds, rand_release_str, 10);
             info("rand_sleep");
-            info(rand_sleep_str);
+            info(rand_release_str);
 
-            sleep(rand_sleep);
-            USE_MEMORY = false;
+            sleep(rand_use_seconds);
+            use_memory = false;
         } else {
             // 释放内存
             info("release memory");
@@ -57,14 +62,14 @@ void main() {
             free(memory);
 
             // 获取随机数，10 ~ 20
-            rand_use = rand() % 11 + 20;
-            char rand_use_str[4] = {0};
-            itoa(rand_use, rand_use_str, 10);
-            info("rand_use");
-            info(rand_use_str);
+            rand_release_seconds = rand() % 11 + 10;
+            char rand_release_str[4] = {0};
+            itoa(rand_release_seconds, rand_release_str, 10);
+            info("rand_release");
+            info(rand_release_str);
 
-            sleep(rand_use);
-            USE_MEMORY = true;
+            sleep(rand_release_seconds);
+            use_memory = true;
         }
     }
 
