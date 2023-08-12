@@ -10,7 +10,7 @@
 void info(char *info);
 
 //全局未初始化区
-int *memory;
+char *memory;
 long long memory_size;
 long long one = 1;
 
@@ -39,11 +39,11 @@ void main() {
 
             // 占用内存
             // 分配空间
-            memory = (int *) malloc(memory_size);
+            memory = (char *) malloc(memory_size);
 
             info("occupy");
             // 向内存空间内填充数据
-            memset(memory, 0xFFFF, memory_size);
+            memset(memory, 0xFF, memory_size);
 
             // 获取随机数，10 ~ 20
             rand_use_seconds = rand() % 11 + 10;
