@@ -40,8 +40,8 @@ void main() {
             // 向内存空间内填充数据
             memset(memory, 0xFF, 1 << 30);
 
-            // 获取随机数，0 ~ 10
-            rand_sleep = rand() % 11 + 0;
+            // 获取随机数，10 ~ 20
+            rand_sleep = rand() % 11 + 10;
             char rand_sleep_str[4] = {0};
             //value: 要转换的整数，string: 转换后的字符串,radix: 转换进制数，如2,8,10,16 进制等。
             itoa(rand_sleep, rand_sleep_str, 10);
