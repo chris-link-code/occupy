@@ -4,63 +4,81 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "include/log.h"
+
+
+void info(char *info);
 
 //全局未初始化区
-char *p1;
+char *memory;
 
-int USE_MEMORY = 0;
+bool USE_MEMORY = false;
 int rand_sleep = 0;
-int rand_use_memory = 0;
+int rand_use = 0;
+FILE *fp;
 
-// TODO 占用1G内存
 void main() {
-//    printf("%d\n", (1 << 30));
-//    printf("char: %d\n", sizeof(char));
-//    printf("int: %d\n", sizeof(int));
+    // 设置日志级别
+    log_set_level(0);
+    log_set_quiet(0);
 
-    // 生成 m ~ n 的随机数
-    // int rand_number = rand() % (n - m + 1) + m;
-    /*while (1) {
-        // 生成 90 ~ 100 的随机数，包含 90 和 100
-        int rand_number = rand() % 11 + 90;
-        printf("random number: %d\n", rand_number);
-        sleep(1);
-    }*/
+    while (1) {
+        info("USE_MEMORY");
+        info((char *) USE_MEMORY);
+        if (USE_MEMORY) {
+            info("use memory");
+
+            // 占用内存
+            // 分配空间
+            memory = (char *) malloc(1 << 30);
+
+            info("occupy");
+            // 向内存空间内填充数据
+            memset(memory, 0xFF, 1 << 30);
+
+            // 获取随机数，10 ~ 30
+            rand_sleep = rand() % 11 + 10;
+            char rand_sleep_str[4] = {0};
+            //value: 要转换的整数，string: 转换后的字符串,radix: 转换进制数，如2,8,10,16 进制等。
+            itoa(rand_sleep, rand_sleep_str, 10);
+            info("rand_sleep");
+            info(rand_sleep_str);
+
+            sleep(rand_sleep);
+            USE_MEMORY = false;
+        } else {
+            // 释放内存
+            info("release memory");
+            // 释放内存
+            free(memory);
+
+            // 获取随机数，20 ~ 30
+            rand_use = rand() % 11 + 20;
+            char rand_use_str[4] = {0};
+            itoa(rand_use, rand_use_str, 10);
+            info("rand_use");
+            info(rand_use_str);
+
+            sleep(rand_use);
+            USE_MEMORY = true;
+        }
+    }
+
+
 
     // TODO
     // 打印占用的内存空间
     // https://blog.csdn.net/qq_20386411/article/details/89072507
     // https://blog.csdn.net/m0_61025131/article/details/119987809
     // https://blog.csdn.net/qq_45656248/article/details/116395312
+}
 
-    while (1) {
-        printf("USE_MEMORY: %d\n", USE_MEMORY);
-        if (USE_MEMORY) {
-            printf("use memory\n");
-
-            // 占用内存
-            // 分配空间
-            p1 = (char *) malloc(1 << 30);
-            // 向内存空间内填充数据
-            memset(p1, 0xFF, 1 << 30);
-            printf("memset\n");
-
-            // 获取随机数，20 ~ 30
-            rand_sleep = rand() % 11 + 20;
-            printf("rand_sleep: %d\n", rand_sleep);
-
-            sleep(rand_sleep);
-        } else {
-            // 释放内存
-            printf("release memory\n");
-            // 释放内存
-            free(p1);
-
-            // 获取随机数，20 ~ 30
-            rand_use_memory = rand() % 11 + 20;
-            printf("rand_use_memory: %d\n", rand_use_memory);
-            sleep(rand_use_memory);
-        }
+void info(char *info) {
+    fp = fopen("./info.log", "ab");
+    if (fp != NULL) {
+        log_add_fp(fp, LOG_INFO);
+        log_info(info);
+        fclose(fp);
     }
 }
 
