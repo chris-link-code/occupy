@@ -72,14 +72,6 @@ void main() {
             use_memory = true;
         }
     }
-
-
-
-    // TODO
-    // 打印占用的内存空间
-    // https://blog.csdn.net/qq_20386411/article/details/89072507
-    // https://blog.csdn.net/m0_61025131/article/details/119987809
-    // https://blog.csdn.net/qq_45656248/article/details/116395312
 }
 
 void info(char *info) {
@@ -90,13 +82,3 @@ void info(char *info) {
         fclose(fp);
     }
 }
-
-/*#include <stdio.h>
-#include <stdlib.h>
-
-void main() {
-    int *a;
-    while (1) {
-        a = (int *) malloc(1000 * sizeof(int));
-    }
-}*/
