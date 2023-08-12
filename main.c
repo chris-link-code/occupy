@@ -23,8 +23,12 @@ void main() {
     log_set_quiet(0);
 
     while (1) {
+        char use_memory_str[4] = {0};
+        //value: 要转换的整数，string: 转换后的字符串,radix: 转换进制数，如2,8,10,16 进制等。
+        itoa(USE_MEMORY, use_memory_str, 10);
         info("USE_MEMORY");
-        info((char *) USE_MEMORY);
+        info(use_memory_str);
+
         if (USE_MEMORY) {
             info("use memory");
 
@@ -36,8 +40,8 @@ void main() {
             // 向内存空间内填充数据
             memset(memory, 0xFF, 1 << 30);
 
-            // 获取随机数，10 ~ 30
-            rand_sleep = rand() % 11 + 10;
+            // 获取随机数，0 ~ 10
+            rand_sleep = rand() % 11 + 0;
             char rand_sleep_str[4] = {0};
             //value: 要转换的整数，string: 转换后的字符串,radix: 转换进制数，如2,8,10,16 进制等。
             itoa(rand_sleep, rand_sleep_str, 10);
@@ -52,7 +56,7 @@ void main() {
             // 释放内存
             free(memory);
 
-            // 获取随机数，20 ~ 30
+            // 获取随机数，10 ~ 20
             rand_use = rand() % 11 + 20;
             char rand_use_str[4] = {0};
             itoa(rand_use, rand_use_str, 10);
